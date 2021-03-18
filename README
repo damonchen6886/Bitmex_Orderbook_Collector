@@ -4,7 +4,9 @@ How to use: git clone https://github.com/damonchen6886/bitmex_orderbook.git, the
 
 A Bitmex BTC/USD orderbook collector that will collect, update real time BTC/USD trading orderbook data to Redis and MongoDB as well as display on terminal.
 
-eg:
+
+display on terminal example:
+
            price  |  size
 ----------------------------------------
 ask 5 :    57744  |  803
