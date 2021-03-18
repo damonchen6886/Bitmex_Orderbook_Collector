@@ -66,9 +66,14 @@ def connection_redis():
     return r
 
 
-mongoConnection = connect_mongoDB()
-redisConnection = connection_redis()
+'''
+uncomment below line if you have set up database and wanted to save data 
+'''
 
+############################################
+# mongoConnection = connect_mongoDB()
+# redisConnection = connection_redis()
+############################################
 
 def on_open(ws):
     data = {"op": "subscribe", "args": ["orderBookL2_25:XBTUSD", "quote:XBTUSD"]}
