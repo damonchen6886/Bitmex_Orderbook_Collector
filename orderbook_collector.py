@@ -11,7 +11,7 @@ MONGO_USER_NAME = "test1"
 MONGO_USER_PWD = "test1"
 
 REDIS_HOST = "redis-11962.c10.us-east-1-3.ec2.cloud.redislabs.com"
-REDIS_PWD = ""
+REDIS_PWD = "########## ADD redis HERE ###############"
 DISPLAY_DEPTH = 5
 
 '''
@@ -42,7 +42,7 @@ tick = Tick()
 
 def connect_mongoDB():
     client = MongoClient(
-        "mongodb://" + MONGO_USER_NAME + ":" + MONGO_USER_PWD + "" + MONGODB_NAME + "?ssl=true&replicaSet=atlas-1101jk-shard-0&authSource=admin&retryWrites=true&w=majority")
+        "mongodb://" + MONGO_USER_NAME + ":" + MONGO_USER_PWD + "####### ADD MongoDB Here #######" + MONGODB_NAME + "?ssl=true&replicaSet=atlas-1101jk-shard-0&authSource=admin&retryWrites=true&w=majority")
     db = client["bitmex"]
     collection = db[MONGODB_NAME]
     # refresh the collection for test propose
