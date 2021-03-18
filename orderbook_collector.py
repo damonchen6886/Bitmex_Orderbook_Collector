@@ -12,6 +12,7 @@ MONGO_USER_PWD = "test1"
 
 REDIS_HOST = "redis-11962.c10.us-east-1-3.ec2.cloud.redislabs.com"
 REDIS_PWD = ""
+DISPLAY_DEPTH = 5
 
 '''
 sample obj to save the latest timestamp
@@ -79,7 +80,7 @@ def on_close(ws):
 
 
 def on_message(ws, message):
-    print(message)
+    # print(message)
     msg = json.loads(message)
 
     if "table" in msg:
@@ -99,21 +100,22 @@ def on_message(ws, message):
 
 def precess_to_display(data, action):
     for item in data:
+        # print("item is ")
         if action == "partial":
             if item["side"] == 'Sell':
                 tick.ask.append(item)
-                tick.ask_id.append(item["id"])
+                if item["id"] not in tick.ask_id:
+                    tick.ask_id.append(item["id"])
             elif item["side"] == "Buy":
                 tick.bid.append(item)
-                tick.bid_id.append(item["id"])
-
+                if item["id"] not in tick.bid_id:
+                    tick.bid_id.append(item["id"])
 
         elif action == "update":
             if item["side"] == 'Sell':
                 if item["id"] in tick.ask_id:
                     for t in tick.ask:
                         if t["id"] == item["id"]:
-                            # print()
                             t["size"] = item["size"]
 
             elif item["side"] == "Buy":
@@ -121,39 +123,39 @@ def precess_to_display(data, action):
                     for t in tick.bid:
                         if t["id"] == item["id"]:
                             t["size"] = item["size"]
+
         elif action == "insert":
             if item['side'] == "Sell":
                 tick.ask.append(item)
-            if item['side'] == "Buy":
+                tick.ask_id.append(item["id"])
+            elif item['side'] == "Buy":
                 tick.bid.append(item)
+                tick.bid_id.append(item["id"])
+
         elif action == "delete":
             if item['side'] == "Sell":
                 tick.ask = list(filter(lambda i: i["id"] != item["id"], tick.ask))
                 tick.ask_id.remove(item["id"])
-            if item['side'] == "Buy":
+            elif item['side'] == "Buy":
                 tick.bid = list(filter(lambda i: i["id"] != item["id"], tick.bid))
+
                 tick.bid_id.remove(item["id"])
 
-    # print(tick.ask)
-    sorted(tick.ask, key=lambda i:  int(i['price']))
-    print("*************",tick.ask)
-    sorted(tick.bid, key=lambda i: int(i['price']))
+    tick.ask = sorted(tick.ask, key=lambda i: int(i['price']), reverse=True)
+    tick.bid = sorted(tick.bid, key=lambda i: int(i['price']), reverse=True)
     print_tick()
 
 
 def print_tick():
-
-    print("%12s %3s %s" % ("price", " | ", "size"))
-    for i in range(len(tick.ask)):
-        print("%12s %3s %s %12s" % (tick.ask[i]["price"], " | ", tick.ask[i]["size"] , tick.ask[i]["id"]))
-    print("*" * 30)
-    for i in range(len(tick.bid)):
-        print("%12s %3s %s %12s" % (tick.bid[i]["price"], " | ", tick.bid[i]["size"],tick.ask[i]["id"]))
-
-    # print(tick.bid)
-    # print(tick.ask)
-    print("\n" * 3)
-
+    print("%16s %3s %s" % ("price", " | ", "size"))
+    print("-" * 40)
+    size = len(tick.ask)
+    for i in range(size - DISPLAY_DEPTH, size):
+        print("%1s %s %s %8s %3s %s" % ("ask", size - i, ":", tick.ask[i]["price"], " | ", tick.ask[i]["size"]))
+    print("*" * 40)
+    for i in range(DISPLAY_DEPTH):
+        print("%1s %s %s %8s %3s %s" % ("bid", i + 1, ":", tick.bid[i]["price"], " | ", tick.bid[i]["size"]))
+    print("\n" * 2)
 
 
 def process_to_redis(data):
