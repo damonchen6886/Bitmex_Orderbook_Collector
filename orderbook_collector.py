@@ -66,8 +66,8 @@ def connection_redis():
     return r
 
 
-mongoConnection = connect_mongoDB()
-redisConnection = connection_redis()
+# mongoConnection = connect_mongoDB()
+# redisConnection = connection_redis()
 
 
 def on_open(ws):
