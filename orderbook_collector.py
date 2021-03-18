@@ -91,11 +91,16 @@ def on_message(ws, message):
     if "table" in msg:
         if msg["table"] == "orderBookL2_25":
             data = msg['data']
-            process_data_to_mongoDB(data, msg['action'])
+            # uncomment below if want to save data to database
+            ##############################################
+            # process_data_to_mongoDB(data, msg['action'])
+            ##############################################
             process_to_display(data, msg["action"])
         elif msg["table"] == 'quote':
             data = msg['data']
-            process_to_redis(data)
+            #############################################
+            # process_to_redis(data)
+            #############################################
 
 
 '''
