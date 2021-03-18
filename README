@@ -23,4 +23,4 @@ bid 5 :  57729.5  |  75000
 
 
 Additional feature: save real time data to the redis and MongoDB and consistently update.
-Simply paste your cloud dabaseinfo and run
+Simply paste your cloud dabase info, uncomment the marked code and run
