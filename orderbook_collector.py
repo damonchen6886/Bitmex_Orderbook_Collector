@@ -66,8 +66,8 @@ def connection_redis():
     return r
 
 
-# mongoConnection = connect_mongoDB()
-# redisConnection = connection_redis()
+mongoConnection = connect_mongoDB()
+redisConnection = connection_redis()
 
 
 def on_open(ws):
@@ -86,19 +86,19 @@ def on_message(ws, message):
     if "table" in msg:
         if msg["table"] == "orderBookL2_25":
             data = msg['data']
-            # process_data_to_mongoDB(data, msg['action'])
-            precess_to_display(data, msg["action"])
+            process_data_to_mongoDB(data, msg['action'])
+            process_to_display(data, msg["action"])
         elif msg["table"] == 'quote':
             data = msg['data']
-            # process_to_redis(data)
+            process_to_redis(data)
 
 
 '''
-    save the latest quote data to the redis, if exists one in redis, updates then
+process data and in order to display on terminal
 '''
 
 
-def precess_to_display(data, action):
+def process_to_display(data, action):
     for item in data:
         # print("item is ")
         if action == "partial":
@@ -146,6 +146,11 @@ def precess_to_display(data, action):
     print_tick()
 
 
+'''
+displays data to on terminal
+'''
+
+
 def print_tick():
     print("%16s %3s %s" % ("price", " | ", "size"))
     print("-" * 40)
@@ -156,6 +161,11 @@ def print_tick():
     for i in range(DISPLAY_DEPTH):
         print("%1s %s %s %8s %3s %s" % ("bid", i + 1, ":", tick.bid[i]["price"], " | ", tick.bid[i]["size"]))
     print("\n" * 2)
+
+
+'''
+    save the latest quote data to the redis, if exists one in redis, updates then
+'''
 
 
 def process_to_redis(data):
