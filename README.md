@@ -1,4 +1,4 @@
-# bitmex_orderbook collector
+bitmex_orderbook collector
 
 How to use: git clone https://github.com/damonchen6886/bitmex_orderbook.git, then run
 
