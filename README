@@ -2,7 +2,7 @@ bitmex_orderbook collector
 
 How to use: git clone https://github.com/damonchen6886/bitmex_orderbook.git, then run
 
-A Bitmex BTC/USD orderbook collector that will collect, update real time BTC/USD trading orderbook data to Redis and MongoDB as well as display on terminal.
+A Bitmex BTC/USDT orderbook collector that will collect, update real time BTC/USDT trading orderbook data to Redis and MongoDB as well as display on terminal.
 
 
 display on terminal example:
